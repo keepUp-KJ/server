@@ -3,12 +3,21 @@ import mongoose from mongoose;
 const Scehma = mongoose.Scehma;
 
 export const SettingsShema = new Scehma ({
-    birthday_reminder: String,
-    call_reminder: String,
-    incomplete_task_reminder: String,
-    birthday_notification: Boolean,
-    daily_call_notification: Boolean,
-    incomplete_task_notification: Boolean,
-    user_id:String,
+    birthdayReminder: { 
+        type :String,
+        enum: ["On the same day", "One day before", "One week before", "None"],
+    },
+    callReminder:{ 
+        type :String,
+        enum: ["On the same day", "One day before", "One week before", "None"],
+    },
+    incompleteTaskReminder: { 
+        type :String,
+        enum: ["On the same day", "One day before", "One week before", "None"],
+    },
+    birthdayNotification: Boolean,
+    dailyCallNotification: Boolean,
+    incompleteTaskNotification: Boolean,
+    userId:String,
     
 })

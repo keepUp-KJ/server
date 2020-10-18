@@ -6,8 +6,8 @@ const Contact = mongoose.model("Contact", ContactSchema);
 export const addContact = async (req, res) => {
   const {
     userId,
-    first_name,
-    last_name,
+    firstName,
+    lastName,
     mobile,
     birthday,
     status,
@@ -18,8 +18,8 @@ export const addContact = async (req, res) => {
   try {
     const contact = new Contact({
       userId,
-      first_name,
-      last_name,
+      firstName,
+      lastName,
       mobile,
       birthday,
       status,
