@@ -1,9 +1,9 @@
-import { signup } from "../controllers/userController";
+import { signup, login } from "../controllers/userController";
 
 const routes = (app) => {
-  app.route("/").post(signup);
+  app.route("/users").post(signup);
 
-  app.route("/login").post((req, res) => res.send("Login request successful"));
+  app.route("/users/login").post(login);
 };
 
 export default routes;

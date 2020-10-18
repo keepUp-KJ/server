@@ -7,6 +7,11 @@ const User = mongoose.model("User", UserSchema);
 export const signup = async (req, res) => {
   const { email, password } = req.body;
 
+  const user = await User.findOne({ email });
+
+  if (user) {
+    return res.send({ error: "Email already registered" });
+  }
   try {
     if (!email || !password) {
       return res.send({ error: "Please provide data required" });
@@ -27,9 +32,27 @@ export const signup = async (req, res) => {
     await user.save();
     const token = jwt.sign({ userId: user._id }, "abcd1234");
     if (token) {
-      res.send(JSON.stringify(token));
+      res.send(token);
     }
   } catch (err) {
-    return res.send({ error: "User already exists" });
+    return res.status(406).send({ error: err.message });
+  }
+};
+
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.send({ error: "Invalid email" });
+  }
+  try {
+    await user.comparePassword(password);
+    const token = jwt.sign({ userId: user._id }, "abcd1234");
+    if (token) {
+      res.send(token);
+    }
+  } catch (err) {
+    return res.status(406).send({ error: err.message });
   }
 };
