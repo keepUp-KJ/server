@@ -4,15 +4,12 @@ const Schema = mongoose.Schema;
 
 export const ReminderSchema = new Schema({
   date: {
-    type: String,
+    type: Date,
     required: true,
   },
   contacts: {
     type: Array,
     required: true,
-  },
-  items: {
-    type: String,
   },
   notify: {
     type: String,
