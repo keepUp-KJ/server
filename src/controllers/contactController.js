@@ -5,6 +5,7 @@ const Contact = mongoose.model("Contact", ContactSchema);
 
 export const addContact = async (req, res) => {
   const {
+    userId,
     first_name,
     last_name,
     mobile,
@@ -16,6 +17,7 @@ export const addContact = async (req, res) => {
 
   try {
     const contact = new Contact({
+      userId,
       first_name,
       last_name,
       mobile,
@@ -27,6 +29,10 @@ export const addContact = async (req, res) => {
     await contact.save();
     res.send({ contact });
   } catch (err) {
-    res.status(406).send({ error: err.message });
+    return res.status(406).send({ error: err.message });
   }
+};
+
+export const getContacts = async (req, res) => {
+  res.send("Success");
 };

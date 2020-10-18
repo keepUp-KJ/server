@@ -3,6 +3,10 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const ContactSchema = new Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
   first_name: {
     type: String,
     required: true,

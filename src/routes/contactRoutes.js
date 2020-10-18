@@ -1,8 +1,11 @@
 import { requireAuth } from "../controllers/userController";
-import { addContact } from "../controllers/contactController";
+import { addContact, getContacts } from "../controllers/contactController";
 
 const routes = (app) => {
-  app.route("/contacts").post(requireAuth, addContact);
+  app
+    .route("/contacts")
+    .post(requireAuth, addContact)
+    .get(requireAuth, getContacts);
 };
 
 export default routes;
