@@ -1,5 +1,6 @@
 import express from "express";
 import userRoutes from "./src/routes/userRoutes";
+import contactRoutes from "./src/routes/contactRoutes";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 
@@ -20,6 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 userRoutes(app);
+contactRoutes(app);
 
 mongoose.connection.on("connected", () => {
   console.log("Connected to mongo instance");
