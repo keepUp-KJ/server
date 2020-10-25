@@ -13,5 +13,8 @@ const routes = (app) => {
   app
     .route("/users/:user-id/settings")
     .get((req, res) => res.send("Settings request successful"));
+  app
+    .route("/users/:user-id/settings")
+    .patch((req, res) => res.send("Settings update successful"));
 };
 export default routes;

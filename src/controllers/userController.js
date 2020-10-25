@@ -28,6 +28,12 @@ export const signup = async (req, res) => {
     const user = new User({
       email,
       password,
+      birthdayReminder: "On the same day",
+      callReminder: "On the same day",
+      incompleteTaskReminder: "On the same day",
+      birthdayNotification: true,
+      dailyCallNotification: true,
+      incompleteTaskNotification: true,
     });
     await user.save();
     const token = jwt.sign({ userId: user._id }, "abcd1234");
