@@ -5,24 +5,43 @@ import { UserSchema } from "../models/User";
 const User = mongoose.model("User", UserSchema);
 
 export const signup = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, confPassword } = req.body;
 
+  const errors = { email: [], password: [], confPassword: [] };
   const user = await User.findOne({ email });
 
   if (user) {
-    return res.send({ error: "Email already registered" });
+    errors.email.push("User already exists");
   }
   try {
-    if (!email || !password) {
-      return res.send({ error: "Please provide data required" });
+    //Password Validation
+    if (!password) {
+      errors.password.push("Enter password");
+    } else {
+      if (password.length < 6) {
+        errors.password.push("Password must be at least 6 characters");
+      }
     }
 
+    if (!confPassword) {
+      errors.confPassword.push("Enter password confirmation");
+    } else {
+      if (password !== confPassword) {
+        errors.confPassword.push("Password does not match");
+      }
+    }
+
+    //Email Validation
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      return res.send({ error: "Please provide a valid mail" });
+      errors.email.push("Please provide a valid mail");
     }
 
-    if (password.length < 6) {
-      return res.send({ error: "Password must be at least 6 characters" });
+    if (
+      errors.email.length ||
+      errors.password.length ||
+      errors.confPassword.length
+    ) {
+      return res.status(406).send({ errors });
     }
 
     const user = new User({
@@ -38,10 +57,7 @@ export const signup = async (req, res) => {
       },
     });
     await user.save();
-    const token = jwt.sign({ userId: user._id }, "abcd1234");
-    if (token) {
-      res.send(token);
-    }
+    res.send({ user });
   } catch (err) {
     return res.status(406).send({ error: err.message });
   }
@@ -52,17 +68,21 @@ export const login = async (req, res) => {
 
   const user = await User.findOne({ email });
   if (!user) {
-    return res.send({ error: "Invalid email" });
+    return res.status(406).send({ error: "Invalid email or password" });
   }
   try {
     await user.comparePassword(password);
-    const token = jwt.sign({ userId: user._id }, "abcd1234");
-    if (token) {
-      res.send(token);
+    // const token = jwt.sign({ userId: user._id }, "abcd1234");
+    if (user) {
+      res.send(user);
     }
   } catch (err) {
-    return res.status(406).send({ error: err.message });
+    return res.status(406).send({ error: "Invalid username or password" });
   }
+};
+
+export const verifyEmail = async (req, res) => {
+  const { email } = req.body;
 };
 
 export const requireAuth = (req, res, next) => {
