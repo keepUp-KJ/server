@@ -28,12 +28,14 @@ export const signup = async (req, res) => {
     const user = new User({
       email,
       password,
-      birthdayReminder: "On the same day",
-      callReminder: "On the same day",
-      incompleteTaskReminder: "On the same day",
-      birthdayNotification: true,
-      dailyCallNotification: true,
-      incompleteTaskNotification: true,
+      settings: {
+        birthdayReminder: "On the same day",
+        callReminder: "On the same day",
+        incompleteTaskReminder: "On the same day",
+        birthdayNotification: true,
+        dailyCallNotification: true,
+        incompleteTaskNotification: true,
+      },
     });
     await user.save();
     const token = jwt.sign({ userId: user._id }, "abcd1234");
@@ -82,4 +84,41 @@ export const requireAuth = (req, res, next) => {
     req.user = user;
     next();
   });
+};
+
+export const updateSettings = async (req, res) => {
+  const userId = req.params.id;
+  const {
+    birthdayReminder,
+    callReminder,
+    incompleteTaskReminder,
+    birthdayNotification,
+    dailyCallNotification,
+    incompleteTaskNotification,
+  } = req.body;
+
+  const updatedSettings = {
+    birthdayReminder,
+    callReminder,
+    incompleteTaskReminder,
+    birthdayNotification,
+    dailyCallNotification,
+    incompleteTaskNotification,
+  };
+
+  if (
+    birthdayReminder != null &&
+    callReminder != null &&
+    incompleteTaskReminder != null &&
+    birthdayNotification != null &&
+    dailyCallNotification != null &&
+    incompleteTaskNotification != null
+  ) {
+    const user = await User.update(
+      { _id: userId },
+      { $set: { settings: updatedSettings } }
+    );
+    user.save;
+    res.send(user);
+  } else return res.send({ error: "Fields can't be empty" });
 };

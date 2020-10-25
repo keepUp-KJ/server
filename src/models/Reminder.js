@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-export const ReminderSchema = new Schema({
+const ReminderSchema = new Schema({
   date: {
     type: Date,
     required: true,
@@ -22,3 +22,4 @@ export const ReminderSchema = new Schema({
     type: Boolean,
   },
 });
+mongoose.model("Reminder", ReminderSchema);
