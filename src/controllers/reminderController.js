@@ -9,8 +9,8 @@ const Contact = mongoose.model("Contact", ContactSchema);
 
 export const addReminder = async (req, res) => {
   const { userId, date, contacts, notify, occasion } = req.body;
-  const user = await User.findOne({ userId });
-  const contact = await Contact.find({ conatcts });
+  const user = await User.findOne({ _id: userId });
+  const contact = await Contact.find({ _id: { $in: contacts } });
   if (user && contact) {
     try {
       const reminder = new Reminder({
@@ -34,4 +34,10 @@ export const getReminders = async (req, res) => {
 
   const reminders = await Reminder.find({ userId });
   res.send(reminders);
+};
+
+export const markCompleted = async (req, res) => {
+  const reminderId = req.params.id;
+  await Reminder.updateOne({ _id: reminderId }, { $set: { completed: true } });
+  res.send("Success");
 };

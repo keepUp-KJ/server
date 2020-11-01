@@ -4,6 +4,7 @@ import {
   updateSettings,
   verifyEmail,
   requireAuth,
+  getUserSettings,
 } from "../controllers/userController";
 
 const routes = (app) => {
@@ -18,5 +19,6 @@ const routes = (app) => {
     .route("/users/:id/settings")
     .get((req, res) => res.send("Settings request successful"))
     .patch(requireAuth, updateSettings);
+  app.route("/users/:id/settings").get(getUserSettings).patch(updateSettings);
 };
 export default routes;
