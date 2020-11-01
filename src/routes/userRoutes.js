@@ -1,4 +1,9 @@
-import { signup, login, updateSettings } from "../controllers/userController";
+import {
+  signup,
+  login,
+  updateSettings,
+  getUserSettings,
+} from "../controllers/userController";
 
 const routes = (app) => {
   app.route("/users").post(signup);
@@ -10,9 +15,6 @@ const routes = (app) => {
   app
     .route("/users/forgot-password")
     .post((req, res) => res.send("Forgot request successful"));
-  app
-    .route("/users/:id/settings")
-    .get((req, res) => res.send("Settings request successful"))
-    .patch(updateSettings);
+  app.route("/users/:id/settings").get(getUserSettings).patch(updateSettings);
 };
 export default routes;

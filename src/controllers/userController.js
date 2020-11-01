@@ -142,3 +142,13 @@ export const updateSettings = async (req, res) => {
     res.send(user);
   } else return res.send({ error: "Fields can't be empty" });
 };
+export const getUserSettings = async (req, res) => {
+  const { userId } = req.params.id;
+  const userSettings = await User.findOne(
+    {
+      userId,
+    },
+    { settings: 1, _id: 0 }
+  );
+  res.send(userSettings);
+};
