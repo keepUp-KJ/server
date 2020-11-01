@@ -1,11 +1,15 @@
-import { signup, login, updateSettings } from "../controllers/userController";
+import {
+  signup,
+  login,
+  updateSettings,
+  verifyEmail,
+  requireAuth,
+} from "../controllers/userController";
 
 const routes = (app) => {
   app.route("/users").post(signup);
   app.route("/users/login").post(login);
-  app
-    .route("/users/verify-email")
-    .post((req, res) => res.send("Verify request successful"));
+  app.route("/users/verify-email").post(verifyEmail);
 
   app
     .route("/users/forgot-password")
@@ -13,6 +17,6 @@ const routes = (app) => {
   app
     .route("/users/:id/settings")
     .get((req, res) => res.send("Settings request successful"))
-    .patch(updateSettings);
+    .patch(requireAuth, updateSettings);
 };
 export default routes;

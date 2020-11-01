@@ -1,12 +1,15 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import { UserSchema } from "../models/User";
+import dotenv from "dotenv";
+dotenv.config();
+import sendEmail from "send-email";
 
 const User = mongoose.model("User", UserSchema);
 
 export const signup = async (req, res) => {
   const { email, password, confPassword } = req.body;
-
+  const code = Math.floor(1000 + Math.random() * 9000);
   const errors = { email: [], password: [], confPassword: [] };
   const user = await User.findOne({ email });
 
@@ -57,6 +60,18 @@ export const signup = async (req, res) => {
       },
     });
     await user.save();
+
+    sendEmail({
+      to: user.email,
+      subject: "Please confirm your email address",
+      html: `<div>
+          <h2>Hi there!</h2>
+          <h3>Thanks for joining KeepUp. To finish registration, please enter the code below to verify your account</h3>
+          <h3>${code}</h3>
+        </div>`,
+      from: "keep.up.kj.usytech@gmail.com",
+    });
+
     res.send({ user });
   } catch (err) {
     return res.status(406).send({ error: err.message });
@@ -82,7 +97,12 @@ export const login = async (req, res) => {
 };
 
 export const verifyEmail = async (req, res) => {
-  const { email } = req.body;
+  const { code } = req.body;
+
+  if (code !== "1234") {
+    return res.status(406).send({ error: "Incorrect code" });
+  }
+  res.send("Success");
 };
 
 export const requireAuth = (req, res, next) => {
@@ -134,11 +154,10 @@ export const updateSettings = async (req, res) => {
     dailyCallNotification != null &&
     incompleteTaskNotification != null
   ) {
-    const user = await User.update(
+    await User.updateOne(
       { _id: userId },
       { $set: { settings: updatedSettings } }
     );
-    user.save;
-    res.send(user);
+    res.send("Success");
   } else return res.send({ error: "Fields can't be empty" });
 };
