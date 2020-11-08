@@ -50,14 +50,7 @@ export const signup = async (req, res) => {
     const user = new User({
       email,
       password,
-      settings: {
-        birthdayReminder: "On the same day",
-        callReminder: "On the same day",
-        incompleteTaskReminder: "On the same day",
-        birthdayNotification: true,
-        dailyCallNotification: true,
-        incompleteTaskNotification: true,
-      },
+      code,
     });
     await user.save();
 
@@ -85,24 +78,41 @@ export const login = async (req, res) => {
   if (!user) {
     return res.status(406).send({ error: "Invalid email or password" });
   }
+  if (!user.isVerified) {
+    return res
+      .status(406)
+      .send({ error: "User not verified - Please verify your email" });
+  }
   try {
     await user.comparePassword(password);
     // const token = jwt.sign({ userId: user._id }, "abcd1234");
-    if (user) {
-      res.send(user);
-    }
+    res.send(user);
   } catch (err) {
     return res.status(406).send({ error: "Invalid username or password" });
   }
 };
 
 export const verifyEmail = async (req, res) => {
-  const { code } = req.body;
+  const { email, code } = req.body;
 
-  if (code !== "1234") {
-    return res.status(406).send({ error: "Incorrect code" });
-  }
-  res.send("Success");
+  User.findOne({ email }, function (err, user) {
+    if (!user) {
+      return res
+        .status(406)
+        .send({ error: "Unable to find user with this email" });
+    }
+    if (user.isVerified) {
+      return res
+        .status(406)
+        .send({ error: "This user has already been verified" });
+    }
+    if (code !== user.code) {
+      return res.status(406).send({ error: "Wrong code entered" });
+    }
+    user.isVerified = true;
+    user.save();
+    res.send("Email verified successfully!");
+  });
 };
 
 export const forgotPassword = async (req, res) => {

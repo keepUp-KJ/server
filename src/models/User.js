@@ -12,22 +12,36 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+  },
+  code: {
+    type: String,
+  },
+  codeExpires: {
+    type: Date,
+    default: () => new Date(+new Date() + 3 * 60 * 1000),
+  },
   settings: {
     birthdayReminder: {
       type: String,
       enum: ["On the same day", "One day before", "One week before", "None"],
+      default: "On the same day",
     },
     callReminder: {
       type: String,
       enum: ["On the same day", "One day before", "One week before", "None"],
+      default: "On the same day",
     },
     incompleteTaskReminder: {
       type: String,
       enum: ["On the same day", "One day before", "One week before", "None"],
+      default: "On the same day",
     },
-    birthdayNotification: Boolean,
-    dailyCallNotification: Boolean,
-    incompleteTaskNotification: Boolean,
+    birthdayNotification: { type: Boolean, default: false },
+    dailyCallNotification: { type: Boolean, default: false },
+    incompleteTaskNotification: { type: Boolean, default: false },
   },
 });
 
@@ -67,5 +81,10 @@ UserSchema.methods.comparePassword = function (enteredPassword) {
     });
   });
 };
+
+UserSchema.index(
+  { codeExpires: 1 },
+  { expireAfterSeconds: 0, partialFilterExpression: { isVerified: false } }
+);
 
 mongoose.model("User", UserSchema);
