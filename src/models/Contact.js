@@ -7,6 +7,10 @@ const ContactSchema = new Schema({
     type: String,
     required: true,
   },
+  contactId: {
+    type: String,
+    required: true,
+  },
   firstName: {
     type: String,
     required: true,
@@ -25,7 +29,6 @@ const ContactSchema = new Schema({
   frequency: {
     type: String,
     enum: ["Daily", "Weekly", "Monthly", "Yearly"],
-    required: true,
   },
   relation: {
     type: String,
