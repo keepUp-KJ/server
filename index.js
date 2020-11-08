@@ -6,7 +6,6 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 mongoose.Promise = global.Promise;
 mongoose.connect(
@@ -20,7 +19,6 @@ mongoose.connect(
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static("public"));
 
 userRoutes(app);
 contactRoutes(app);
@@ -34,8 +32,8 @@ mongoose.connection.on("error", (err) => {
   console.error("Error connecting to mongo\n", err);
 });
 
-app.get("/", (req, res) => res.send(`Server running on ${PORT}`));
+app.get("/", (req, res) => res.send(`Hello`));
 
-app.listen(PORT, () => {
-  console.log(`Your server is running on port ${PORT}`);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Your server is running`);
 });
