@@ -86,7 +86,7 @@ export const login = async (req, res) => {
   try {
     await user.comparePassword(password);
     // const token = jwt.sign({ userId: user._id }, "abcd1234");
-    res.send(user);
+    res.send({ user });
   } catch (err) {
     return res.status(406).send({ error: "Invalid username or password" });
   }

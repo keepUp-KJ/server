@@ -16,10 +16,10 @@ const ContactSchema = new Schema({
     type: String,
     required: true,
   },
-  birthday: Date,
+  birthday: { type: Date },
   status: {
     type: String,
-    enum: ["Accepted", "Rejected", "Pending"],
+    enum: ["Accepted", "Rejected"],
     required: true,
   },
   frequency: {
