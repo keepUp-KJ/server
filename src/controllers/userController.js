@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import { UserSchema } from "../models/User";
+import sendEmail from "send-email";
 import dotenv from "dotenv";
 dotenv.config();
-import sendEmail from "send-email";
 
 const User = mongoose.model("User", UserSchema);
 
@@ -103,6 +103,10 @@ export const verifyEmail = async (req, res) => {
     return res.status(406).send({ error: "Incorrect code" });
   }
   res.send("Success");
+};
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
 };
 
 export const requireAuth = (req, res, next) => {
