@@ -36,7 +36,7 @@ const UserSchema = new Schema({
     },
     incompleteTaskReminder: {
       type: String,
-      enum: ["On the same day", "One day before", "One week before", "None"],
+      enum: ["One day after", "One week after", "None"],
       default: "On the same day",
     },
     birthdayNotification: { type: Boolean, default: false },

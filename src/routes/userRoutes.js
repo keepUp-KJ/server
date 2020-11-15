@@ -16,6 +16,6 @@ const routes = (app) => {
   app
     .route("/users/:id/settings")
     .patch(requireAuth, updateSettings)
-    .get(requireAuth, getUserSettings);
+    .get(getUserSettings);
 };
 export default routes;
