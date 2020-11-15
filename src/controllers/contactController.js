@@ -16,6 +16,11 @@ export const addContact = async (req, res) => {
     relation,
   } = req.body;
 
+  const existingContact = await Contact.find({ contactId, userId });
+  if (existingContact.length) {
+    return res.status(406).send({ error: "Contact already added" });
+  }
+
   try {
     const contact = new Contact({
       userId,

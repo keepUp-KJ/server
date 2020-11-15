@@ -111,7 +111,7 @@ export const verifyEmail = async (req, res) => {
     }
     user.isVerified = true;
     user.save();
-    res.send("Email verified successfully!");
+    res.send({ response: "Email verified successfully!" });
   });
 };
 
