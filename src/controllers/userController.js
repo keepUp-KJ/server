@@ -117,6 +117,20 @@ export const verifyEmail = async (req, res) => {
 
 export const forgotPassword = async (req, res) => {
   const { email } = req.body;
+  const code = Math.floor(1000 + Math.random() * 9000);
+
+  sendEmail({
+    to: email,
+    subject: "Please confirm your email address",
+    html: `<div>
+        <h2>Hi there!</h2>
+        <h3>Thanks for joining KeepUp. To change password, please enter the code below to verify your email</h3>
+        <h3>${code}</h3>
+      </div>`,
+    from: "keep.up.kj.usytech@gmail.com",
+  });
+
+  res.send({ response: "Success" });
 };
 
 export const requireAuth = (req, res, next) => {

@@ -41,3 +41,5 @@ export const markCompleted = async (req, res) => {
   await Reminder.updateOne({ _id: reminderId }, { $set: { completed: true } });
   res.send("Success");
 };
+
+export const generateReminders = async (req, res) => {};

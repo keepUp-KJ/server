@@ -37,7 +37,7 @@ const UserSchema = new Schema({
     incompleteTaskReminder: {
       type: String,
       enum: ["One day after", "One week after", "None"],
-      default: "On the same day",
+      default: "One day after",
     },
     birthdayNotification: { type: Boolean, default: false },
     dailyCallNotification: { type: Boolean, default: false },
