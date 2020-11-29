@@ -101,17 +101,12 @@ export const verifyEmail = async (req, res) => {
         .status(406)
         .send({ error: "Unable to find user with this email" });
     }
-    if (user.isVerified) {
-      return res
-        .status(406)
-        .send({ error: "This user has already been verified" });
-    }
     if (code !== user.code) {
       return res.status(406).send({ error: "Wrong code entered" });
     }
     user.isVerified = true;
     user.save();
-    res.send({ response: "Email verified successfully!" });
+    res.send({ response: "Success!" });
   });
 };
 
@@ -130,7 +125,37 @@ export const forgotPassword = async (req, res) => {
     from: "keep.up.kj.usytech@gmail.com",
   });
 
+  const user = User.find({ email });
+  if (!user)
+    return res
+      .status(406)
+      .send({ error: "Email not registered on the system" });
+
+  await User.updateOne({ email }, { $set: { code } });
+
   res.send({ response: "Success" });
+};
+
+export const renewPassword = async (req, res) => {
+  const { email, password, confPassword } = req.body;
+
+  const user = await User.findOne({ email });
+
+  if (!password) return res.status(406).send({ error: "Enter password" });
+  else if (password.length < 6)
+    return res
+      .status(406)
+      .send({ error: "Password must be at least 6 characters" });
+
+  if (!confPassword)
+    return res.status(406).send({ error: "Enter password confirmation" });
+  else if (password !== confPassword)
+    return res.status(406).send({ error: "Password does not match" });
+
+  await User.updateOne({ email }, { $set: { password } });
+  await user.save();
+
+  res.send({ response: "Password renewed successfully!" });
 };
 
 export const requireAuth = (req, res, next) => {
