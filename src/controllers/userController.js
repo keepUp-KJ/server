@@ -181,37 +181,18 @@ export const requireAuth = (req, res, next) => {
 
 export const updateSettings = async (req, res) => {
   const userId = req.params.id;
-  const {
-    birthdayReminder,
-    callReminder,
-    incompleteTaskReminder,
-    birthdayNotification,
-    dailyCallNotification,
-    incompleteTaskNotification,
-  } = req.body;
-
-  const updatedSettings = {
-    birthdayReminder,
-    callReminder,
-    incompleteTaskReminder,
-    birthdayNotification,
-    dailyCallNotification,
-    incompleteTaskNotification,
-  };
+  const { settings } = req.body;
 
   if (
-    birthdayReminder != null &&
-    callReminder != null &&
-    incompleteTaskReminder != null &&
-    birthdayNotification != null &&
-    dailyCallNotification != null &&
-    incompleteTaskNotification != null
+    settings.birthdayReminder != null &&
+    settings.callReminder != null &&
+    settings.incompleteTaskReminder != null &&
+    settings.birthdayNotification != null &&
+    settings.dailyCallNotification != null &&
+    settings.incompleteTaskNotification != null
   ) {
-    await User.updateOne(
-      { _id: userId },
-      { $set: { settings: updatedSettings } }
-    );
-    res.send("Success");
+    await User.updateOne({ _id: userId }, { $set: { settings } });
+    res.send({ response: "Success" });
   } else return res.send({ error: "Fields can't be empty" });
 };
 
