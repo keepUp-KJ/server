@@ -19,5 +19,8 @@ const routes = (app) => {
     .route("/users/:id/settings")
     .patch(requireAuth, updateSettings)
     .get(getUserSettings);
+=======
+  app.route("/users/:id/settings").patch(updateSettings).get(getUserSettings);
+>>>>>>> Stashed changes
 };
 export default routes;
