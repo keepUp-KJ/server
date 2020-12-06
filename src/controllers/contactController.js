@@ -41,6 +41,8 @@ export const addContact = async (req, res) => {
 };
 
 export const getContacts = async (req, res) => {
-  const contacts = await Contact.find({});
+  const id = req.params.id;
+
+  const contacts = await Contact.find({ userId: id });
   res.send({ contacts });
 };
