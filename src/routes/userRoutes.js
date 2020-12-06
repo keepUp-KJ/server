@@ -14,14 +14,10 @@ const routes = (app) => {
   app.route("/users/login").post(login);
   app.route("/users/verify-email").post(verifyEmail);
   app.route("/users/forgot-password").post(forgotPassword);
-<<<<<<< Updated upstream
   app.route("/users/renew-password").patch(renewPassword);
   app
     .route("/users/:id/settings")
     .patch(requireAuth, updateSettings)
     .get(getUserSettings);
-=======
-  app.route("/users/:id/settings").patch(updateSettings).get(getUserSettings);
->>>>>>> Stashed changes
 };
 export default routes;
