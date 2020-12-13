@@ -183,8 +183,6 @@ export const updateSettings = async (req, res) => {
   const userId = req.params.id;
   const { settings } = req.body;
 
-  console.log(settings);
-
   if (
     settings.birthdayReminder != null &&
     settings.callReminder != null &&
