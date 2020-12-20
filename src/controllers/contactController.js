@@ -1,3 +1,4 @@
+import { use } from "bcrypt/promises";
 import mongoose from "mongoose";
 import { ContactSchema } from "../models/Contact";
 
@@ -45,4 +46,14 @@ export const getContacts = async (req, res) => {
 
   const contacts = await Contact.find({ userId: id });
   res.send({ contacts });
+};
+
+export const editContact = async (req, res) => {
+  const { contactId, frequency, relation } = req.body;
+
+  await Contact.updateOne(
+    { _id: contactId },
+    { $set: { frequency, relation } }
+  );
+  res.send({ response: "Success" });
 };
