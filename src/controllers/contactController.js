@@ -4,40 +4,28 @@ import { ContactSchema } from "../models/Contact";
 const Contact = mongoose.model("Contact", ContactSchema);
 
 export const addContact = async (req, res) => {
-  const {
-    userId,
-    contactId,
-    firstName,
-    lastName,
-    mobile,
-    birthday,
-    status,
-    frequency,
-    relation,
-  } = req.body;
+  const { userId, contacts } = req.body;
 
-  const existingContact = await Contact.find({ contactId, userId });
-  if (existingContact.length) {
-    return res.status(406).send({ error: "Contact already added" });
+  console.log(contacts);
+
+  for (var i = 0; i < contacts.length; i++) {
+    try {
+      const c = new Contact({
+        userId,
+        contactId: contacts[i].contact.id,
+        firstName: contacts[i].contact.firstName,
+        lastName: contacts[i].contact.lastName,
+        // mobile: contacts[i].contact.phoneNumbers[0].number,
+        status: "Accepted",
+        frequency: contacts[i].frequency,
+      });
+      c.save();
+    } catch (err) {
+      return res.status(406).send({ error: err.message });
+    }
   }
 
-  try {
-    const contact = new Contact({
-      userId,
-      contactId,
-      firstName,
-      lastName,
-      mobile,
-      birthday,
-      status,
-      frequency,
-      relation,
-    });
-    await contact.save();
-    res.send({ contact });
-  } catch (err) {
-    return res.status(406).send({ error: err.message });
-  }
+  res.send({ response: "Success" });
 };
 
 export const getContacts = async (req, res) => {

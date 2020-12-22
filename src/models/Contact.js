@@ -16,11 +16,11 @@ const ContactSchema = new Schema({
     required: true,
   },
   lastName: String,
-  mobile: {
-    type: String,
-    required: true,
-  },
-  birthday: { type: Date },
+  // mobile: {
+  //   type: String,
+  //   required: true,
+  // },
+  // birthday: { type: Date },
   status: {
     type: String,
     enum: ["Accepted", "Rejected"],
@@ -28,11 +28,11 @@ const ContactSchema = new Schema({
   },
   frequency: {
     type: String,
-    enum: ["Daily", "Weekly", "Monthly", "Yearly"],
+    enum: ["daily", "weekly", "monthly"],
   },
-  relation: {
-    type: String,
-  },
+  // relation: {
+  //   type: String,
+  // },
 });
 
 mongoose.model("Contact", ContactSchema);
