@@ -1,9 +1,9 @@
-import { requireAuth } from "../controllers/userController";
-import {
+const { requireAuth } = require("../controllers/userController");
+const {
   getContacts,
   editContact,
   setupAccount,
-} from "../controllers/contactController";
+} = require("../controllers/contactController");
 
 const routes = (app) => {
   app.route("/contacts").post(setupAccount);
@@ -11,4 +11,4 @@ const routes = (app) => {
   app.route("/users/contacts").patch(editContact);
 };
 
-export default routes;
+module.exports = routes;

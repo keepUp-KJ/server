@@ -1,13 +1,13 @@
-import { requireAuth } from "../controllers/userController";
-import {
+const { requireAuth } = require("../controllers/userController");
+const {
   addReminder,
   getReminders,
   markCompleted,
-} from "../controllers/reminderController";
+} = require("../controllers/reminderController");
 
 const routes = (app) => {
   app.route("/reminders").post(addReminder);
   app.route("/reminders/:id").get(getReminders);
   app.route("/reminders/:id/completed").patch(requireAuth, markCompleted);
 };
-export default routes;
+module.exports = routes;

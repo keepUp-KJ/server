@@ -1,13 +1,13 @@
-import mongoose from "mongoose";
-import { ReminderSchema } from "../models/Reminder";
-import { UserSchema } from "../models/User";
-import { ContactSchema } from "../models/Contact";
+const mongoose = require("mongoose");
+const { UserSchema } = require("../models/User");
+const { ContactSchema } = require("../models/Contact");
+const { ReminderSchema } = require("../models/Reminder");
 
 const Reminder = mongoose.model("Reminder", ReminderSchema);
 const User = mongoose.model("User", UserSchema);
 const Contact = mongoose.model("Contact", ContactSchema);
 
-export const addReminder = async (req, res) => {
+exports.addReminder = async (req, res) => {
   const { userId, date, contacts, notify, occasion } = req.body;
   const user = await User.findOne({ _id: userId });
   const contact = await Contact.find({ _id: { $in: contacts } });
@@ -29,7 +29,7 @@ export const addReminder = async (req, res) => {
   } else return res.send({ error: "User or contact not found" });
 };
 
-export const getReminders = async (req, res) => {
+exports.getReminders = async (req, res) => {
   const userId = req.params.id;
 
   const reminders = await Reminder.find({ userId });
@@ -37,7 +37,7 @@ export const getReminders = async (req, res) => {
   res.send({ reminders });
 };
 
-export const markCompleted = async (req, res) => {
+exports.markCompleted = async (req, res) => {
   const reminderId = req.params.id;
   await Reminder.updateOne({ _id: reminderId }, { $set: { completed: true } });
   res.send("Success");

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
@@ -26,4 +26,5 @@ const ReminderSchema = new Schema({
     type: Boolean,
   },
 });
+
 mongoose.model("Reminder", ReminderSchema);

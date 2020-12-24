@@ -1,4 +1,4 @@
-import {
+const {
   signup,
   login,
   updateSettings,
@@ -7,7 +7,7 @@ import {
   getUserSettings,
   forgotPassword,
   renewPassword,
-} from "../controllers/userController";
+} = require("../controllers/userController");
 
 const routes = (app) => {
   app.route("/users").post(signup);
@@ -17,4 +17,5 @@ const routes = (app) => {
   app.route("/users/renew-password").patch(renewPassword);
   app.route("/users/:id/settings").patch(updateSettings).get(getUserSettings);
 };
-export default routes;
+
+module.exports = routes;

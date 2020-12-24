@@ -1,9 +1,10 @@
-import express from "express";
-import userRoutes from "./src/routes/userRoutes";
-import contactRoutes from "./src/routes/contactRoutes";
-import reminderRoutes from "./src/routes/reminderRoutes";
-import mongoose from "mongoose";
-import bodyParser from "body-parser";
+const userRoutes = require("./src/routes/userRoutes");
+const contactRoutes = require("./src/routes/contactRoutes");
+const reminderRoutes = require("./src/routes/reminderRoutes");
+
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
 const app = express();
 

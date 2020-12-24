@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
-import { ContactSchema } from "../models/Contact";
-import { ReminderSchema } from "../models/Reminder";
-import moment from "moment";
+const mongoose = require("mongoose");
+const { ContactSchema } = require("../models/Contact");
+const { ReminderSchema } = require("../models/Reminder");
+const moment = require("moment");
 
 const Contact = mongoose.model("Contact", ContactSchema);
 const Reminder = mongoose.model("Reminder", ReminderSchema);
 
-export const setupAccount = async (req, res) => {
+exports.setupAccount = async (req, res) => {
   const { userId, contacts } = req.body;
 
   for (var i = 0; i < contacts.length; i++) {
@@ -50,14 +50,14 @@ export const setupAccount = async (req, res) => {
   res.send({ response: "Success" });
 };
 
-export const getContacts = async (req, res) => {
+exports.getContacts = async (req, res) => {
   const id = req.params.id;
 
   const contacts = await Contact.find({ userId: id });
   res.send({ contacts });
 };
 
-export const editContact = async (req, res) => {
+exports.editContact = async (req, res) => {
   const { contactId, frequency, relation } = req.body;
 
   await Contact.updateOne(

@@ -1,13 +1,13 @@
-import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
-import { UserSchema } from "../models/User";
-import sendEmail from "send-email";
-import dotenv from "dotenv";
+const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
+const { UserSchema } = require("../models/User");
+const sendEmail = require("send-email");
+const dotenv = require("dotenv");
 dotenv.config();
 
 const User = mongoose.model("User", UserSchema);
 
-export const signup = async (req, res) => {
+exports.signup = async (req, res) => {
   const { email, password, confPassword } = req.body;
   const code = Math.floor(1000 + Math.random() * 9000);
   const errors = { email: [], password: [], confPassword: [] };
@@ -71,7 +71,7 @@ export const signup = async (req, res) => {
   }
 };
 
-export const login = async (req, res) => {
+exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -92,7 +92,7 @@ export const login = async (req, res) => {
   }
 };
 
-export const verifyEmail = async (req, res) => {
+exports.verifyEmail = async (req, res) => {
   const { email, code } = req.body;
 
   User.findOne({ email }, function (err, user) {
@@ -110,7 +110,7 @@ export const verifyEmail = async (req, res) => {
   });
 };
 
-export const forgotPassword = async (req, res) => {
+exports.forgotPassword = async (req, res) => {
   const { email } = req.body;
   const code = Math.floor(1000 + Math.random() * 9000);
 
@@ -136,7 +136,7 @@ export const forgotPassword = async (req, res) => {
   res.send({ response: "Success" });
 };
 
-export const renewPassword = async (req, res) => {
+exports.renewPassword = async (req, res) => {
   const { email, password, confPassword } = req.body;
 
   const user = await User.findOne({ email });
@@ -158,7 +158,7 @@ export const renewPassword = async (req, res) => {
   res.send({ response: "Password renewed successfully!" });
 };
 
-export const requireAuth = (req, res, next) => {
+exports.requireAuth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
@@ -179,7 +179,7 @@ export const requireAuth = (req, res, next) => {
   });
 };
 
-export const updateSettings = async (req, res) => {
+exports.updateSettings = async (req, res) => {
   const userId = req.params.id;
   const { settings } = req.body;
 
@@ -196,7 +196,7 @@ export const updateSettings = async (req, res) => {
   } else return res.send({ error: "Fields can't be empty" });
 };
 
-export const getUserSettings = async (req, res) => {
+exports.getUserSettings = async (req, res) => {
   const { userId } = req.params.id;
   const userSettings = await User.findOne(
     {
