@@ -93,9 +93,9 @@ exports.login = async (req, res) => {
 };
 
 exports.verifyEmail = async (req, res) => {
-  const { email, code } = req.body;
+  const { userId, code } = req.body;
 
-  User.findOne({ email }, function (err, user) {
+  User.findById({ userId }, function (err, user) {
     if (!user) {
       return res
         .status(406)
