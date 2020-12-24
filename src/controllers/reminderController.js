@@ -30,10 +30,11 @@ export const addReminder = async (req, res) => {
 };
 
 export const getReminders = async (req, res) => {
-  const { userId } = req.body;
+  const userId = req.params.id;
 
   const reminders = await Reminder.find({ userId });
-  res.send(reminders);
+
+  res.send({ reminders });
 };
 
 export const markCompleted = async (req, res) => {
@@ -41,5 +42,3 @@ export const markCompleted = async (req, res) => {
   await Reminder.updateOne({ _id: reminderId }, { $set: { completed: true } });
   res.send("Success");
 };
-
-export const generateReminders = async (req, res) => {};
