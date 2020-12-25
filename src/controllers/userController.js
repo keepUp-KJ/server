@@ -73,17 +73,18 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-
-  const user = await User.findOne({ email });
-  if (!user) {
-    return res.status(406).send({ error: "Invalid email or password" });
-  }
-  if (!user.isVerified) {
-    return res
-      .status(406)
-      .send({ error: "User not verified - Please verify your email" });
-  }
   try {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(406).send({ error: "Invalid email or password" });
+    }
+    if (!user.isVerified) {
+      return res
+        .status(406)
+        .send({ error: "User not verified - Please verify your email" });
+    }
+
     await user.comparePassword(password);
     // const token = jwt.sign({ userId: user._id }, "abcd1234");
     res.send({ user });
