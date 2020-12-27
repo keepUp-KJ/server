@@ -13,11 +13,14 @@ exports.setupAccount = async (req, res) => {
     try {
       const c = new Contact({
         userId,
-        contactId: contacts[i].contact.id,
-        firstName: contacts[i].contact.firstName,
-        lastName: contacts[i].contact.lastName,
-        // mobile: contacts[i].contact.phoneNumbers[0].number,
-        status: "Accepted",
+        info: {
+          id: contacts[i].contact.id,
+          firstName: contacts[i].contact.firstName,
+          lastName: contacts[i].contact.lastName,
+          // mobile: contacts[i].contact.phoneNumbers[0].number,
+        },
+        isAccepted: true,
+        isRejected: false,
         frequency,
         notify: contacts[i].notify,
       });
@@ -71,10 +74,13 @@ exports.acceptContact = async (req, res) => {
   try {
     const c = new Contact({
       userId,
-      contactId: contact.contact.id,
-      firstName: contact.contact.firstName,
-      lastName: contact.contact.lastName,
-      status: "Accepted",
+      info: {
+        id: contact.contact.id,
+        firstName: contact.contact.firstName,
+        lastName: contact.contact.lastName,
+      },
+      isAccepted: true,
+      isRejected: false,
       frequency,
       notify: "On the same day",
     });

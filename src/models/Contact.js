@@ -7,23 +7,28 @@ const ContactSchema = new Schema({
     type: String,
     required: true,
   },
-  contactId: {
-    type: String,
+  info: {
+    id: {
+      type: String,
+      required: true,
+    },
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: String,
+    // mobile: {
+    //   type: String,
+    //   required: true,
+    // },
+    // birthday: { type: Date },
+  },
+  isAccepted: {
+    type: Boolean,
     required: true,
   },
-  firstName: {
-    type: String,
-    required: true,
-  },
-  lastName: String,
-  // mobile: {
-  //   type: String,
-  //   required: true,
-  // },
-  // birthday: { type: Date },
-  status: {
-    type: String,
-    enum: ["Accepted", "Rejected"],
+  isRejected: {
+    type: Boolean,
     required: true,
   },
   frequency: {
