@@ -14,9 +14,9 @@ exports.setupAccount = async (req, res) => {
       const c = new Contact({
         userId,
         info: {
-          id: contacts[i].contact.id,
-          firstName: contacts[i].contact.firstName,
-          lastName: contacts[i].contact.lastName,
+          id: contacts[i].info.id,
+          firstName: contacts[i].info.firstName,
+          lastName: contacts[i].info.lastName,
           // mobile: contacts[i].contact.phoneNumbers[0].number,
         },
         isAccepted: true,
