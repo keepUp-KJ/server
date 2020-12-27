@@ -75,9 +75,9 @@ exports.acceptContact = async (req, res) => {
     const c = new Contact({
       userId,
       info: {
-        id: contact.contact.id,
-        firstName: contact.contact.firstName,
-        lastName: contact.contact.lastName,
+        id: contact.info.id,
+        firstName: contact.info.firstName,
+        lastName: contact.info.lastName,
       },
       isAccepted: true,
       isRejected: false,
