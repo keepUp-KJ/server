@@ -7,7 +7,7 @@ const Contact = mongoose.model("Contact", ContactSchema);
 const Reminder = mongoose.model("Reminder", ReminderSchema);
 
 exports.setupAccount = async (req, res) => {
-  const { userId, contacts, frequency } = req.body;
+  const { userId, contacts } = req.body;
 
   for (var i = 0; i < contacts.length; i++) {
     try {
@@ -21,7 +21,7 @@ exports.setupAccount = async (req, res) => {
         },
         isAccepted: true,
         isRejected: false,
-        frequency,
+        frequency: contacts[i].frequency,
         notify: contacts[i].notify,
       });
       c.save();
