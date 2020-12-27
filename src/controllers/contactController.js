@@ -66,7 +66,7 @@ exports.editContact = async (req, res) => {
 };
 
 exports.acceptContact = async (req, res) => {
-  const { userId, contact } = req.body;
+  const { userId, contact, frequency } = req.body;
 
   try {
     const yarab = new Contact({
@@ -75,16 +75,16 @@ exports.acceptContact = async (req, res) => {
       firstName: contact.contact.firstName,
       lastName: contact.contact.lastName,
       status: "Accepted",
-      frequency: contact.frequency,
+      frequency,
     });
     yarab.save();
 
     const reminder = new Reminder({
       userId,
       date:
-        contact.frequency === "weekly"
+        frequency === "weekly"
           ? moment().add(7, "days").format("MMM DD, YYYY")
-          : contact.frequency === "monthly"
+          : frequency === "monthly"
           ? moment().add(30, "days").format("MMM DD, YYYY")
           : moment().format("MMM DD, YYYY"),
       contacts: [
