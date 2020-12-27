@@ -15,8 +15,7 @@ exports.setupAccount = async (req, res) => {
         userId,
         contactId: contacts[i].contact.id,
         firstName: contacts[i].contact.firstName,
-        lastName: contacts[i].contact.lastName,
-        // mobile: contacts[i].contact.phoneNumbers[0].number,
+        lastName: contacts[i].contact.lastName, // mobile: contacts[i].contact.phoneNumbers[0].number,
         status: "Accepted",
         frequency: contacts[i].frequency,
         notify: contacts[i].notify,
@@ -76,7 +75,6 @@ exports.acceptContact = async (req, res) => {
       lastName: contact.contact.lastName,
       status: "Accepted",
       frequency,
-      notify: "On the same day",
     });
     c.save();
 
