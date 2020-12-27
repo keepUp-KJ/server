@@ -59,11 +59,8 @@ exports.getContacts = async (req, res) => {
 };
 
 exports.editContact = async (req, res) => {
-  const { contactId, frequency, relation } = req.body;
+  const { contactId, frequency, notify } = req.body;
 
-  await Contact.updateOne(
-    { _id: contactId },
-    { $set: { frequency, relation } }
-  );
+  await Contact.updateOne({ _id: contactId }, { $set: { frequency, notify } });
   res.send({ response: "Success" });
 };
