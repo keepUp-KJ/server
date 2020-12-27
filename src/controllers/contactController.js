@@ -76,6 +76,7 @@ exports.acceptContact = async (req, res) => {
       lastName: contact.contact.lastName,
       status: "Accepted",
       frequency,
+      notify: "On the same day",
     });
     c.save();
 
