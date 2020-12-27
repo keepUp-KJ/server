@@ -64,3 +64,43 @@ exports.editContact = async (req, res) => {
   await Contact.updateOne({ _id: contactId }, { $set: { frequency, notify } });
   res.send({ response: "Success" });
 };
+
+exports.acceptContact = async (req, res) => {
+  const { userId, contact } = req.body;
+
+  try {
+    const yarab = new Contact({
+      userId,
+      contactId: contact.contact.id,
+      firstName: contact.contact.firstName,
+      lastName: contact.contact.lastName,
+      status: "Accepted",
+      frequency: contact.frequency,
+    });
+    yarab.save();
+
+    const reminder = new Reminder({
+      userId,
+      date:
+        contact.frequency === "weekly"
+          ? moment().add(7, "days").format("MMM DD, YYYY")
+          : contact.frequency === "monthly"
+          ? moment().add(30, "days").format("MMM DD, YYYY")
+          : moment().format("MMM DD, YYYY"),
+      contacts: [
+        {
+          id: contact.contact.id,
+          firstName: contact.contact.firstName,
+          lastName: contact.contact.lastName,
+        },
+      ],
+      notify: "On the same day",
+      occasion: null,
+      completed: false,
+    });
+    reminder.save();
+  } catch (err) {
+    return res.status(406).send({ error: err.message });
+  }
+  res.send("HEYYYY");
+};
