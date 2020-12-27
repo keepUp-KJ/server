@@ -69,7 +69,7 @@ exports.acceptContact = async (req, res) => {
   const { userId, contact, frequency } = req.body;
 
   try {
-    const yarab = new Contact({
+    const c = new Contact({
       userId,
       contactId: contact.contact.id,
       firstName: contact.contact.firstName,
@@ -77,7 +77,7 @@ exports.acceptContact = async (req, res) => {
       status: "Accepted",
       frequency,
     });
-    yarab.save();
+    c.save();
 
     const reminder = new Reminder({
       userId,
@@ -102,5 +102,5 @@ exports.acceptContact = async (req, res) => {
   } catch (err) {
     return res.status(406).send({ error: err.message });
   }
-  res.send("HEYYYY");
+  res.send({ response: "Success" });
 };
