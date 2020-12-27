@@ -81,7 +81,7 @@ exports.acceptContact = async (req, res) => {
       },
       isAccepted: true,
       isRejected: false,
-      frequency,
+      frequency: contact.info.frequency,
       notify: "On the same day",
     });
     c.save();
