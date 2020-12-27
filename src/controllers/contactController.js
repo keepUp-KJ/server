@@ -19,6 +19,7 @@ exports.setupAccount = async (req, res) => {
         // mobile: contacts[i].contact.phoneNumbers[0].number,
         status: "Accepted",
         frequency: contacts[i].frequency,
+        notify: contacts[i].notify,
       });
       c.save();
 
@@ -37,7 +38,7 @@ exports.setupAccount = async (req, res) => {
             lastName: contacts[i].contact.lastName,
           },
         ],
-        notify: "On the same day",
+        notify: contacts[i].notify,
         occasion: null,
         completed: false,
       });
