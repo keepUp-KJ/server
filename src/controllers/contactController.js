@@ -11,41 +11,57 @@ exports.setupAccount = async (req, res) => {
 
   for (var i = 0; i < contacts.length; i++) {
     try {
-      const c = new Contact({
-        userId,
-        info: {
-          id: contacts[i].info.id,
-          firstName: contacts[i].info.firstName,
-          lastName: contacts[i].info.lastName,
-          // mobile: contacts[i].contact.phoneNumbers[0].number,
-        },
-        isAccepted: contacts[i].isAccepted,
-        isRejected: contacts[i].isRejected,
-        frequency: contacts[i].frequency,
-        // notify: contacts[i].notify,
-      });
-      c.save();
-
-      const reminder = new Reminder({
-        userId,
-        date:
-          contacts[i].frequency === "weekly"
-            ? moment().add(7, "days").format("MMM DD, YYYY")
-            : contacts[i].frequency === "monthly"
-            ? moment().add(30, "days").format("MMM DD, YYYY")
-            : moment().format("MMM DD, YYYY"),
-        contacts: [
-          {
+      if (contacts[i].isAccepted) {
+        const c = new Contact({
+          userId,
+          info: {
             id: contacts[i].info.id,
             firstName: contacts[i].info.firstName,
             lastName: contacts[i].info.lastName,
+            mobile: contacts[i].contact.phoneNumbers[0].number,
           },
-        ],
-        // notify: contacts[i].notify,
-        occasion: null,
-        completed: false,
-      });
-      reminder.save();
+          isAccepted: contacts[i].isAccepted,
+          isRejected: contacts[i].isRejected,
+          frequency: contacts[i].frequency,
+          notify: contacts[i].notify,
+        });
+        c.save();
+      } else {
+        const c = new Contact({
+          userId,
+          info: {
+            id: contacts[i].info.id,
+            firstName: contacts[i].info.firstName,
+            lastName: contacts[i].info.lastName,
+            mobile: contacts[i].contact.phoneNumbers[0].number,
+          },
+          isAccepted: contacts[i].isAccepted,
+          isRejected: contacts[i].isRejected,
+        });
+      }
+
+      if (contacts[i].isAccepted) {
+        const reminder = new Reminder({
+          userId,
+          date:
+            contacts[i].frequency === "weekly"
+              ? moment().add(7, "days").format("MMM DD, YYYY")
+              : contacts[i].frequency === "monthly"
+              ? moment().add(30, "days").format("MMM DD, YYYY")
+              : moment().format("MMM DD, YYYY"),
+          contacts: [
+            {
+              id: contacts[i].info.id,
+              firstName: contacts[i].info.firstName,
+              lastName: contacts[i].info.lastName,
+            },
+          ],
+          notify: contacts[i].notify,
+          occasion: null,
+          completed: false,
+        });
+        reminder.save();
+      }
     } catch (err) {
       return res.status(406).send({ error: err.message });
     }
