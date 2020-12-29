@@ -19,8 +19,8 @@ exports.setupAccount = async (req, res) => {
           lastName: contacts[i].info.lastName,
           // mobile: contacts[i].contact.phoneNumbers[0].number,
         },
-        isAccepted: true,
-        isRejected: false,
+        isAccepted: contacts[i].isAccepted,
+        isRejected: contacts[i].isRejected,
         frequency: contacts[i].frequency,
         notify: contacts[i].notify,
       });
@@ -65,6 +65,12 @@ exports.editContact = async (req, res) => {
   const { contactId, frequency, notify } = req.body;
 
   await Contact.updateOne({ _id: contactId }, { $set: { frequency, notify } });
+
+  //Update contact reminder
+  // --> On the same day (date)
+  // --> One day before (date - 1)
+  // --> One week before (date - 7)
+
   res.send({ response: "Success" });
 };
 

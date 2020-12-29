@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { UserSchema } = require("../models/User");
 const { ContactSchema } = require("../models/Contact");
 const { ReminderSchema } = require("../models/Reminder");
+const moment = require("moment");
 
 const Reminder = mongoose.model("Reminder", ReminderSchema);
 const User = mongoose.model("User", UserSchema);
@@ -39,6 +40,12 @@ exports.getReminders = async (req, res) => {
 
 exports.markCompleted = async (req, res) => {
   const reminderId = req.params.id;
+  // const reminder = await Reminder.findById({ _id: reminderId });
+
+  // if (reminder && reminder.occasion === null) {
+  //   const contact = await Contact.findById({ _id: reminder.contacts[0] });
+  // }
+
   await Reminder.updateOne({ _id: reminderId }, { $set: { completed: true } });
   res.send("Success");
 };
