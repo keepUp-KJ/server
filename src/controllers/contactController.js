@@ -22,7 +22,7 @@ exports.setupAccount = async (req, res) => {
         isAccepted: contacts[i].isAccepted,
         isRejected: contacts[i].isRejected,
         frequency: contacts[i].frequency,
-        notify: contacts[i].notify,
+        notify: contacts[i].notify || null,
       });
       c.save();
 
@@ -41,7 +41,7 @@ exports.setupAccount = async (req, res) => {
             lastName: contacts[i].info.lastName,
           },
         ],
-        notify: contacts[i].notify,
+        notify: contacts[i].notify || null,
         occasion: null,
         completed: false,
       });
