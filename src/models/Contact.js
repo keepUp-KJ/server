@@ -17,10 +17,10 @@ const ContactSchema = new Schema({
       required: true,
     },
     lastName: String,
-    // mobile: {
-    //   type: String,
-    //   required: true,
-    // },
+    mobile: {
+      type: String,
+      required: true,
+    },
     // birthday: { type: Date },
   },
   isAccepted: {

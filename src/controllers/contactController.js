@@ -38,6 +38,7 @@ exports.setupAccount = async (req, res) => {
           isAccepted: contacts[i].isAccepted,
           isRejected: contacts[i].isRejected,
         });
+        c.save();
       }
 
       if (contacts[i].isAccepted) {
