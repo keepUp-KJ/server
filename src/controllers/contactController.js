@@ -101,6 +101,7 @@ exports.acceptContact = async (req, res) => {
         id: contact.info.id,
         firstName: contact.info.firstName,
         lastName: contact.info.lastName,
+        mobile: contact.info.phoneNumbers[0].number,
       },
       isAccepted: true,
       isRejected: false,
