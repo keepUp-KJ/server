@@ -52,9 +52,11 @@ exports.setupAccount = async (req, res) => {
               : moment().format("MMM DD, YYYY"),
           contacts: [
             {
-              id: contacts[i].info.id,
-              firstName: contacts[i].info.firstName,
-              lastName: contacts[i].info.lastName,
+              info: {
+                id: contacts[i].info.id,
+                firstName: contacts[i].info.firstName,
+                lastName: contacts[i].info.lastName,
+              },
             },
           ],
           notify: contacts[i].notify,
