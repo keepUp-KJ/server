@@ -137,3 +137,25 @@ exports.acceptContact = async (req, res) => {
   }
   res.send({ response: "Success" });
 };
+
+exports.rejectContact = async (req, res) => {
+  const { userId, contact } = req.body;
+
+  try {
+    const c = new Contact({
+      userId,
+      info: {
+        id: contact.info.id,
+        firstName: contact.info.firstName,
+        lastName: contact.info.lastName,
+        mobile: contact.info.phoneNumbers[0].number,
+      },
+      isAccepted: false,
+      isRejected: true,
+    });
+    c.save();
+  } catch (err) {
+    return res.status(406).send({ error: err.message });
+  }
+  res.send({ response: "Success" });
+};
