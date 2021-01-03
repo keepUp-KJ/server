@@ -1,22 +1,48 @@
 const mongoose = require("mongoose");
 const { UserSchema } = require("../models/User");
-const { ContactSchema } = require("../models/Contact");
 const { ReminderSchema } = require("../models/Reminder");
 const moment = require("moment");
 
 const Reminder = mongoose.model("Reminder", ReminderSchema);
 const User = mongoose.model("User", UserSchema);
-const Contact = mongoose.model("Contact", ContactSchema);
+
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 exports.addReminder = async (req, res) => {
   const { userId, date, contacts, notify, occasion } = req.body;
+
   const user = await User.findOne({ _id: userId });
-  const contact = await Contact.find({ _id: { $in: contacts } });
-  if (user && contact) {
+
+  if (!occasion) {
+    return res.status(406).send({ error: "Enter event title" });
+  }
+
+  var d = new Date(Date.parse(date));
+  const reminderDate =
+    months[d.getMonth()] +
+    " " +
+    ("0" + d.getDate()).slice(-2) +
+    ", " +
+    d.getFullYear();
+
+  if (user && contacts) {
     try {
       const reminder = new Reminder({
         userId,
-        date,
+        date: reminderDate,
         contacts,
         notify,
         occasion,
