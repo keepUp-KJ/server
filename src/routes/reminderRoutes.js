@@ -8,6 +8,6 @@ const {
 const routes = (app) => {
   app.route("/reminders").post(addReminder);
   app.route("/reminders/:id").get(getReminders);
-  app.route("/reminders/:id/completed").patch(requireAuth, markCompleted);
+  app.route("/reminders/:id/completed").patch(markCompleted);
 };
 module.exports = routes;

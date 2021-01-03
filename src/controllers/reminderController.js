@@ -40,12 +40,29 @@ exports.getReminders = async (req, res) => {
 
 exports.markCompleted = async (req, res) => {
   const reminderId = req.params.id;
-  // const reminder = await Reminder.findById({ _id: reminderId });
+  const reminder = await Reminder.findById({ _id: reminderId });
 
-  // if (reminder && reminder.occasion === null) {
-  //   const contact = await Contact.findById({ _id: reminder.contacts[0] });
-  // }
+  const notify = reminder.notify;
 
-  await Reminder.updateOne({ _id: reminderId }, { $set: { completed: true } });
+  if (reminder && reminder.occasion === null) {
+    try {
+      const contact = await Contact.findOne({
+        "info.id": reminder.contacts[0].id,
+      });
+      today = moment().format("MMM DD, YYYY");
+      if (contact.frequency === "daily") {
+        today = moment().add(1, "day").format("MMM DD, YYYY");
+      } else if (contact.frequency === "weekly") {
+        today = moment().add(7, "day").format("MMM DD, YYYY");
+      } else if (contact.frequency === "monthly") {
+        today = moment().add(1, "month").format("MMM DD, YYYY");
+      }
+
+      await Reminder.updateOne({ _id: reminderId }, { $set: { date: today } });
+    } catch (err) {
+      return res.status(406).send({ error: err.message });
+    }
+  }
+
   res.send("Success");
 };
