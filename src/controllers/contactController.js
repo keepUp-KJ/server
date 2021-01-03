@@ -122,9 +122,11 @@ exports.acceptContact = async (req, res) => {
           : moment().format("MMM DD, YYYY"),
       contacts: [
         {
-          id: contact.info.id,
-          firstName: contact.info.firstName,
-          lastName: contact.info.lastName,
+          info: {
+            id: contact.info.id,
+            firstName: contact.info.firstName,
+            lastName: contact.info.lastName,
+          },
         },
       ],
       notify: "On the same day",
