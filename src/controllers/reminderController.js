@@ -68,8 +68,6 @@ exports.markCompleted = async (req, res) => {
   const reminderId = req.params.id;
   const reminder = await Reminder.findById({ _id: reminderId });
 
-  const notify = reminder.notify;
-
   if (reminder && reminder.occasion === null) {
     try {
       const contact = await Contact.findOne({
