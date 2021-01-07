@@ -68,11 +68,10 @@ exports.markCompleted = async (req, res) => {
   const reminderId = req.params.id;
   const reminder = await Reminder.findById({ _id: reminderId });
 
+  const { contact } = req.body;
+
   if (reminder && reminder.occasion === null) {
     try {
-      const contact = await Contact.findOne({
-        "info.id": reminder.contacts[0].id,
-      });
       today = moment().format("MMM DD, YYYY");
       if (contact.frequency === "daily") {
         today = moment().add(1, "day").format("MMM DD, YYYY");
