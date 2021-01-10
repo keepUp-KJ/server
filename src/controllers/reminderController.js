@@ -1,10 +1,12 @@
 const mongoose = require("mongoose");
 const { UserSchema } = require("../models/User");
 const { ReminderSchema } = require("../models/Reminder");
+const { ContactSchema } = require("../models/Contact");
 const moment = require("moment");
 
 const Reminder = mongoose.model("Reminder", ReminderSchema);
 const User = mongoose.model("User", UserSchema);
+const Contact = mongoose.model("Contact", ContactSchema);
 
 const months = [
   "Jan",
@@ -68,10 +70,12 @@ exports.markCompleted = async (req, res) => {
   const reminderId = req.params.id;
   const reminder = await Reminder.findById({ _id: reminderId });
 
-  const { contact } = req.body;
-
   if (reminder && reminder.occasion === null) {
     try {
+      const contact = await Contact.findOne({
+        "info.id": reminder.contacts[0].info.id,
+      });
+
       today = moment().format("MMM DD, YYYY");
       if (contact.frequency === "daily") {
         today = moment().add(1, "day").format("MMM DD, YYYY");
@@ -81,11 +85,19 @@ exports.markCompleted = async (req, res) => {
         today = moment().add(1, "month").format("MMM DD, YYYY");
       }
 
-      await Reminder.updateOne({ _id: reminderId }, { $set: { date: today } });
+      await Reminder.updateOne(
+        { _id: reminderId },
+        { $set: { date: today, completed: true } }
+      );
     } catch (err) {
       return res.status(406).send({ error: err.message });
     }
+  } else {
+    await Reminder.updateOne(
+      { _id: reminderId },
+      { $set: { completed: true } }
+    );
   }
 
-  res.send("Success");
+  res.send({ response: "Success" });
 };
