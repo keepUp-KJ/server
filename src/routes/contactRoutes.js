@@ -9,10 +9,10 @@ const {
 
 const routes = (app) => {
   app.route("/contacts").post(setupAccount);
-  app.route("/contacts/accept").post(acceptContact);
-  app.route("/contacts/reject").post(rejectContact);
-  app.route("/users/:id/contacts").get(getContacts);
-  app.route("/users/contacts").patch(editContact);
+  app.route("/contacts/accept").post(requireAuth, acceptContact);
+  app.route("/contacts/reject").post(requireAuth, rejectContact);
+  app.route("/users/:id/contacts").get(requireAuth, getContacts);
+  app.route("/users/contacts").patch(requireAuth, editContact);
 };
 
 module.exports = routes;
