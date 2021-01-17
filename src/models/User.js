@@ -16,6 +16,22 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  pushToken: {
+    type: String,
+    default: null,
+  },
+  firstName: {
+    type: String,
+    default: null,
+  },
+  lastName: {
+    type: String,
+    default: null,
+  },
+  mobile: {
+    type: String,
+    default: null,
+  },
   code: {
     type: String,
   },

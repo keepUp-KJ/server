@@ -7,6 +7,7 @@ const {
   getUserSettings,
   forgotPassword,
   renewPassword,
+  setPushToken,
 } = require("../controllers/userController");
 
 const routes = (app) => {
@@ -16,6 +17,7 @@ const routes = (app) => {
   app.route("/users/forgot-password").post(forgotPassword);
   app.route("/users/renew-password").patch(renewPassword);
   app.route("/users/:id/settings").patch(updateSettings).get(getUserSettings);
+  app.route("/users/:id/token").patch(setPushToken);
 };
 
 module.exports = routes;

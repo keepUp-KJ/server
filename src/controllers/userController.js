@@ -207,3 +207,11 @@ exports.getUserSettings = async (req, res) => {
   );
   res.send(userSettings);
 };
+
+exports.setPushToken = async (req, res) => {
+  const { token } = req.body;
+  const { userId } = req.params.id;
+
+  await User.updateOne({ _id: userId }, { $set: { pushToken: token } });
+  res.send({ response: "Success" });
+};
