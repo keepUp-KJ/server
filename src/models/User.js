@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const Schema = mongoose.Schema;
 
@@ -33,6 +34,9 @@ const UserSchema = new Schema({
     default: null,
   },
   code: {
+    type: String,
+  },
+  token: {
     type: String,
   },
   codeExpires: {

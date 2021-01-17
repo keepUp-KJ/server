@@ -6,7 +6,7 @@ const {
 } = require("../controllers/reminderController");
 
 const routes = (app) => {
-  app.route("/reminders").post(addReminder);
+  app.route("/reminders").post(requireAuth, addReminder);
   app.route("/reminders/:id").get(getReminders);
   app.route("/reminders/:id/completed").patch(markCompleted);
 };

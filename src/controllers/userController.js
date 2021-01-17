@@ -47,11 +47,15 @@ exports.signup = async (req, res) => {
       return res.status(406).send({ errors });
     }
 
+    const token = jwt.sign(user.email, "abcd1234");
+
     const user = new User({
       email,
       password,
       code,
+      token,
     });
+
     await user.save();
 
     sendEmail({
