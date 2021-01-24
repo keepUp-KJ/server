@@ -23,7 +23,6 @@ exports.setupAccount = async (req, res) => {
           isAccepted: contacts[i].isAccepted,
           isRejected: contacts[i].isRejected,
           frequency: contacts[i].frequency,
-          notify: contacts[i].notify,
         });
         c.save();
       } else {
@@ -59,7 +58,6 @@ exports.setupAccount = async (req, res) => {
               },
             },
           ],
-          notify: contacts[i].notify,
           occasion: null,
           completed: false,
         });
@@ -81,9 +79,9 @@ exports.getContacts = async (req, res) => {
 };
 
 exports.editContact = async (req, res) => {
-  const { contactId, frequency, notify } = req.body;
+  const { contactId, frequency } = req.body;
 
-  await Contact.updateOne({ _id: contactId }, { $set: { frequency, notify } });
+  await Contact.updateOne({ _id: contactId }, { $set: { frequency } });
 
   //Update contact reminder
   // --> On the same day (date)
@@ -108,7 +106,6 @@ exports.acceptContact = async (req, res) => {
       isAccepted: true,
       isRejected: false,
       frequency: frequency,
-      notify: "On the same day",
     });
     c.save();
 
@@ -129,7 +126,6 @@ exports.acceptContact = async (req, res) => {
           },
         },
       ],
-      notify: "On the same day",
       occasion: null,
       completed: false,
     });

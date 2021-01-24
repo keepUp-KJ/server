@@ -35,10 +35,6 @@ const ContactSchema = new Schema({
     type: String,
     enum: ["daily", "weekly", "monthly"],
   },
-  notify: {
-    type: String,
-    enum: ["On the same day", "One day before", "One week before", "None"],
-  },
   // relation: {
   //   type: String,
   // },
