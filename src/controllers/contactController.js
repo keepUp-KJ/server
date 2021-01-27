@@ -14,12 +14,7 @@ exports.setupAccount = async (req, res) => {
       if (contacts[i].isAccepted) {
         const c = new Contact({
           userId,
-          info: {
-            id: contacts[i].info.id,
-            firstName: contacts[i].info.firstName,
-            lastName: contacts[i].info.lastName,
-            mobile: contacts[i].info.phoneNumbers[0].number,
-          },
+          info: contacts[i].info,
           isAccepted: contacts[i].isAccepted,
           isRejected: contacts[i].isRejected,
           frequency: contacts[i].frequency,
@@ -28,12 +23,7 @@ exports.setupAccount = async (req, res) => {
       } else {
         const c = new Contact({
           userId,
-          info: {
-            id: contacts[i].info.id,
-            firstName: contacts[i].info.firstName,
-            lastName: contacts[i].info.lastName,
-            mobile: contacts[i].info.phoneNumbers[0].number,
-          },
+          info: contacts[i].info,
           isAccepted: contacts[i].isAccepted,
           isRejected: contacts[i].isRejected,
         });
@@ -51,11 +41,7 @@ exports.setupAccount = async (req, res) => {
               : moment().format("MMM DD, YYYY"),
           contacts: [
             {
-              info: {
-                id: contacts[i].info.id,
-                firstName: contacts[i].info.firstName,
-                lastName: contacts[i].info.lastName,
-              },
+              info: contacts[i].info,
             },
           ],
           occasion: null,
