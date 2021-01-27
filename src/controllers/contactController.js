@@ -83,12 +83,7 @@ exports.acceptContact = async (req, res) => {
   try {
     const c = new Contact({
       userId,
-      info: {
-        id: contact.info.id,
-        firstName: contact.info.firstName,
-        lastName: contact.info.lastName,
-        mobile: contact.info.phoneNumbers[0].number,
-      },
+      info: contact.info,
       isAccepted: true,
       isRejected: false,
       frequency: frequency,
@@ -105,11 +100,7 @@ exports.acceptContact = async (req, res) => {
           : moment().format("MMM DD, YYYY"),
       contacts: [
         {
-          info: {
-            id: contact.info.id,
-            firstName: contact.info.firstName,
-            lastName: contact.info.lastName,
-          },
+          info: contact.info,
         },
       ],
       occasion: null,
@@ -128,12 +119,7 @@ exports.rejectContact = async (req, res) => {
   try {
     const c = new Contact({
       userId,
-      info: {
-        id: contact.info.id,
-        firstName: contact.info.firstName,
-        lastName: contact.info.lastName,
-        mobile: contact.info.phoneNumbers[0].number,
-      },
+      info: contact.info,
       isAccepted: false,
       isRejected: true,
     });
