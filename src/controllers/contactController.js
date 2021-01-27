@@ -98,11 +98,7 @@ exports.acceptContact = async (req, res) => {
           : frequency === "monthly"
           ? moment().add(30, "days").format("MMM DD, YYYY")
           : moment().format("MMM DD, YYYY"),
-      contacts: [
-        {
-          info: contact.info,
-        },
-      ],
+      contacts: [{ info: contact.info }],
       occasion: null,
       completed: false,
     });

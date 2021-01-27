@@ -8,20 +8,8 @@ const ContactSchema = new Schema({
     required: true,
   },
   info: {
-    id: {
-      type: String,
-      required: true,
-    },
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: String,
-    mobile: {
-      type: String,
-      required: true,
-    },
-    // birthday: { type: Date },
+    type: Object,
+    required: true,
   },
   isAccepted: {
     type: Boolean,
