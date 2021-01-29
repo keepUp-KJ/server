@@ -48,7 +48,7 @@ exports.addReminder = async (req, res) => {
         contacts,
         notify,
         occasion,
-        completed: "false",
+        completed: false,
       });
       await reminder.save();
       res.send({ reminder });
@@ -60,8 +60,39 @@ exports.addReminder = async (req, res) => {
 
 exports.getReminders = async (req, res) => {
   const userId = req.params.id;
-
   const reminders = await Reminder.find({ userId });
+  const today = moment().format("MMM DD, YYYY");
+  reminders.forEach(async (reminder) => {
+    if (moment(reminder.date).isBefore(today)) {
+      // To be done: Add a new document for forgotten tasks
+
+      if (reminder && reminder.occasion === null) {
+        try {
+          const contact = await Contact.findOne({
+            "info.id": reminder.contacts[0].info.id,
+          });
+          let newDate;
+          if (contact.frequency === "daily") {
+            newDate = moment().format("MMM DD, YYYY");
+          } else if (contact.frequency === "weekly") {
+            newDate = moment().day(7).format("MMM DD, YYYY");
+          } else if (contact.frequency === "monthly") {
+            newDate = moment()
+              .add(1, "month")
+              .startOf("month")
+              .format("MMM DD, YYYY");
+          }
+
+          await Reminder.updateOne(
+            { _id: reminder._id },
+            { $set: { date: newDate } }
+          );
+        } catch (err) {
+          return res.status(406).send({ error: err.message });
+        }
+      }
+    }
+  });
 
   res.send({ reminders });
 };
@@ -85,10 +116,7 @@ exports.markCompleted = async (req, res) => {
         today = moment().add(1, "month").format("MMM DD, YYYY");
       }
 
-      await Reminder.updateOne(
-        { _id: reminderId },
-        { $set: { date: today, completed: true } }
-      );
+      await Reminder.updateOne({ _id: reminderId }, { $set: { date: today } });
     } catch (err) {
       return res.status(406).send({ error: err.message });
     }
