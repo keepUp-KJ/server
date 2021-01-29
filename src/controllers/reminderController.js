@@ -122,7 +122,7 @@ exports.markCompleted = async (req, res) => {
       }
 
       await Reminder.updateOne({ _id: reminderId }, { $set: { date: today } });
-      return res.send({ resposne: "Success" });
+      return res.send({ response: "Success" });
     } catch (err) {
       return res.status(406).send({ error: err.message });
     }
