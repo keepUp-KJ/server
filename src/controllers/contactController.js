@@ -20,24 +20,14 @@ exports.setupAccount = async (req, res) => {
           frequency: contacts[i].frequency,
         });
         c.save();
-      } else {
-        const c = new Contact({
-          userId,
-          info: contacts[i].info,
-          isAccepted: contacts[i].isAccepted,
-          isRejected: contacts[i].isRejected,
-        });
-        c.save();
-      }
 
-      if (contacts[i].isAccepted) {
         const reminder = new Reminder({
           userId,
           date:
             contacts[i].frequency === "weekly"
-              ? moment().add(7, "day").format("MMM DD, YYYY")
+              ? moment().day("Sunday").format("MMM DD, YYYY")
               : contacts[i].frequency === "monthly"
-              ? moment().add(1, "month").format("MMM DD, YYYY")
+              ? moment().add(1, "month").startOf("month").format("MMM DD, YYYY")
               : moment().format("MMM DD, YYYY"),
           contacts: [
             {
@@ -48,6 +38,14 @@ exports.setupAccount = async (req, res) => {
           completed: false,
         });
         reminder.save();
+      } else {
+        const c = new Contact({
+          userId,
+          info: contacts[i].info,
+          isAccepted: contacts[i].isAccepted,
+          isRejected: contacts[i].isRejected,
+        });
+        c.save();
       }
     } catch (err) {
       return res.status(406).send({ error: err.message });
