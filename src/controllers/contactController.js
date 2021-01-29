@@ -9,6 +9,8 @@ const Reminder = mongoose.model("Reminder", ReminderSchema);
 exports.setupAccount = async (req, res) => {
   const { userId, contacts } = req.body;
 
+  const today = moment().day();
+
   for (var i = 0; i < contacts.length; i++) {
     try {
       if (contacts[i].isAccepted) {
@@ -25,9 +27,9 @@ exports.setupAccount = async (req, res) => {
           userId,
           date:
             contacts[i].frequency === "weekly"
-              ? moment()
-                  .day(5 + 7)
-                  .format("MMM DD, YYYY")
+              ? today === 5
+                ? moment().day(5).format("MMM DD, YYYY")
+                : moment().day(12).format("MMM DD, YYYY")
               : contacts[i].frequency === "monthly"
               ? moment().add(1, "month").startOf("month").format("MMM DD, YYYY")
               : moment().format("MMM DD, YYYY"),
