@@ -109,6 +109,7 @@ exports.markCompleted = async (req, res) => {
     try {
       const contact = await Contact.findOne({
         "info.id": reminder.contacts[0].info.id,
+        userId: reminder.userId,
       });
 
       today = moment().format("MMM DD, YYYY");
@@ -121,6 +122,7 @@ exports.markCompleted = async (req, res) => {
       }
 
       await Reminder.updateOne({ _id: reminderId }, { $set: { date: today } });
+      return res.send({ resposne: "Success" });
     } catch (err) {
       return res.status(406).send({ error: err.message });
     }
