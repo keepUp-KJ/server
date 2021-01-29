@@ -25,7 +25,9 @@ exports.setupAccount = async (req, res) => {
           userId,
           date:
             contacts[i].frequency === "weekly"
-              ? moment().day("Sunday").format("MMM DD, YYYY")
+              ? moment()
+                  .day(5 + 7)
+                  .format("MMM DD, YYYY")
               : contacts[i].frequency === "monthly"
               ? moment().add(1, "month").startOf("month").format("MMM DD, YYYY")
               : moment().format("MMM DD, YYYY"),
