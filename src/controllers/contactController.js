@@ -14,27 +14,16 @@ exports.setupAccount = async (req, res) => {
       if (contacts[i].isAccepted) {
         const c = new Contact({
           userId,
-          info: {
-            id: contacts[i].info.id,
-            firstName: contacts[i].info.firstName,
-            lastName: contacts[i].info.lastName,
-            mobile: contacts[i].info.phoneNumbers[0].number,
-          },
+          info: contacts[i].info,
           isAccepted: contacts[i].isAccepted,
           isRejected: contacts[i].isRejected,
           frequency: contacts[i].frequency,
-          notify: contacts[i].notify,
         });
         c.save();
       } else {
         const c = new Contact({
           userId,
-          info: {
-            id: contacts[i].info.id,
-            firstName: contacts[i].info.firstName,
-            lastName: contacts[i].info.lastName,
-            mobile: contacts[i].info.phoneNumbers[0].number,
-          },
+          info: contacts[i].info,
           isAccepted: contacts[i].isAccepted,
           isRejected: contacts[i].isRejected,
         });
@@ -52,14 +41,9 @@ exports.setupAccount = async (req, res) => {
               : moment().format("MMM DD, YYYY"),
           contacts: [
             {
-              info: {
-                id: contacts[i].info.id,
-                firstName: contacts[i].info.firstName,
-                lastName: contacts[i].info.lastName,
-              },
+              info: contacts[i].info,
             },
           ],
-          notify: contacts[i].notify,
           occasion: null,
           completed: false,
         });
@@ -81,9 +65,9 @@ exports.getContacts = async (req, res) => {
 };
 
 exports.editContact = async (req, res) => {
-  const { contactId, frequency, notify } = req.body;
+  const { contactId, frequency } = req.body;
 
-  await Contact.updateOne({ _id: contactId }, { $set: { frequency, notify } });
+  await Contact.updateOne({ _id: contactId }, { $set: { frequency } });
 
   //Update contact reminder
   // --> On the same day (date)
@@ -99,16 +83,10 @@ exports.acceptContact = async (req, res) => {
   try {
     const c = new Contact({
       userId,
-      info: {
-        id: contact.info.id,
-        firstName: contact.info.firstName,
-        lastName: contact.info.lastName,
-        mobile: contact.info.phoneNumbers[0].number,
-      },
+      info: contact.info,
       isAccepted: true,
       isRejected: false,
       frequency: frequency,
-      notify: "On the same day",
     });
     c.save();
 
@@ -120,16 +98,7 @@ exports.acceptContact = async (req, res) => {
           : frequency === "monthly"
           ? moment().add(30, "days").format("MMM DD, YYYY")
           : moment().format("MMM DD, YYYY"),
-      contacts: [
-        {
-          info: {
-            id: contact.info.id,
-            firstName: contact.info.firstName,
-            lastName: contact.info.lastName,
-          },
-        },
-      ],
-      notify: "On the same day",
+      contacts: [{ info: contact.info }],
       occasion: null,
       completed: false,
     });
@@ -146,12 +115,7 @@ exports.rejectContact = async (req, res) => {
   try {
     const c = new Contact({
       userId,
-      info: {
-        id: contact.info.id,
-        firstName: contact.info.firstName,
-        lastName: contact.info.lastName,
-        mobile: contact.info.phoneNumbers[0].number,
-      },
+      info: contact.info,
       isAccepted: false,
       isRejected: true,
     });
