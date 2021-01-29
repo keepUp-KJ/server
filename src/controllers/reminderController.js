@@ -71,15 +71,19 @@ exports.getReminders = async (req, res) => {
           const contact = await Contact.findOne({
             "info.id": reminder.contacts[0].info.id,
           });
+          const day = moment(reminder.date).day();
+          const monthDay = moment(reminder.date).date();
           let newDate;
           if (contact.frequency === "daily") {
             newDate = moment().format("MMM DD, YYYY");
           } else if (contact.frequency === "weekly") {
-            newDate = moment().day(7).format("MMM DD, YYYY");
+            newDate = moment()
+              .day(day + 7)
+              .format("MMM DD, YYYY");
           } else if (contact.frequency === "monthly") {
             newDate = moment()
-              .add(1, "month")
-              .startOf("month")
+              .add(1, "M")
+              .date(monthDay)
               .format("MMM DD, YYYY");
           }
 
