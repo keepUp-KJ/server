@@ -91,13 +91,13 @@ exports.getReminders = async (req, res) => {
             { _id: reminder._id },
             { $set: { date: newDate } }
           );
+          return res.send({ reminders });
         } catch (err) {
           return res.status(406).send({ error: err.message });
         }
       }
     }
   });
-
   res.send({ reminders });
 };
 
