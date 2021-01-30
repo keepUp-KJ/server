@@ -133,5 +133,5 @@ exports.markCompleted = async (req, res) => {
     );
   }
 
-  res.send({ response: "Success" });
+  res.send({ reminder });
 };
