@@ -8,7 +8,14 @@ dotenv.config();
 const User = mongoose.model("User", UserSchema);
 
 exports.signup = async (req, res) => {
-  const { email, password, confPassword } = req.body;
+  const {
+    email,
+    firstName,
+    lastName,
+    mobile,
+    password,
+    confPassword,
+  } = req.body;
   const code = Math.floor(1000 + Math.random() * 9000);
   const errors = { email: [], password: [], confPassword: [] };
   const user = await User.findOne({ email });
@@ -51,6 +58,9 @@ exports.signup = async (req, res) => {
 
     const user = new User({
       email,
+      firstName,
+      lastName,
+      mobile,
       password,
       code,
       token,
