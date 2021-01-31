@@ -127,12 +127,15 @@ exports.removeFromBlackList = async (req, res) => {
 
 getDate = (frequency) => {
   const today = moment().day();
+  const dayOfWeek = 0; //Sunday
   let date;
 
   frequency === "weekly"
-    ? today === 0
-      ? (date = moment().day(0).format("MMM DD, YYYY"))
-      : (date = moment().day(7).format("MMM DD, YYYY"))
+    ? today === dayOfWeek
+      ? (date = moment().day(dayOfWeek).format("MMM DD, YYYY"))
+      : (date = moment()
+          .day(dayOfWeek + 7)
+          .format("MMM DD, YYYY"))
     : frequency === "monthly"
     ? (date = moment().add(1, "month").startOf("month").format("MMM DD, YYYY"))
     : (date = moment().format("MMM DD, YYYY"));
