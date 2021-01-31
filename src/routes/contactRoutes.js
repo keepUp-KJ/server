@@ -5,6 +5,7 @@ const {
   setupAccount,
   acceptContact,
   rejectContact,
+  removeFromBlackList,
 } = require("../controllers/contactController");
 
 const routes = (app) => {
@@ -13,6 +14,7 @@ const routes = (app) => {
   app.route("/contacts/reject").post(requireAuth, rejectContact);
   app.route("/users/:id/contacts").get(requireAuth, getContacts);
   app.route("/users/contacts").patch(requireAuth, editContact);
+  app.route("/contacts/:id/remove").delete(requireAuth, removeFromBlackList);
 };
 
 module.exports = routes;

@@ -27,9 +27,9 @@ exports.setupAccount = async (req, res) => {
           userId,
           date:
             contacts[i].frequency === "weekly"
-              ? today === 5
-                ? moment().day(5).format("MMM DD, YYYY")
-                : moment().day(12).format("MMM DD, YYYY")
+              ? today === 0
+                ? moment().day(0).format("MMM DD, YYYY")
+                : moment().day(7).format("MMM DD, YYYY")
               : contacts[i].frequency === "monthly"
               ? moment().add(1, "month").startOf("month").format("MMM DD, YYYY")
               : moment().format("MMM DD, YYYY"),
@@ -82,6 +82,8 @@ exports.editContact = async (req, res) => {
 exports.acceptContact = async (req, res) => {
   const { userId, contact, frequency } = req.body;
 
+  const today = moment().day();
+
   try {
     const c = new Contact({
       userId,
@@ -96,9 +98,11 @@ exports.acceptContact = async (req, res) => {
       userId,
       date:
         frequency === "weekly"
-          ? moment().add(7, "days").format("MMM DD, YYYY")
+          ? today === 0
+            ? moment().day(0).format("MMM DD, YYYY")
+            : moment().day(7).format("MMM DD, YYYY")
           : frequency === "monthly"
-          ? moment().add(30, "days").format("MMM DD, YYYY")
+          ? moment().add(1, "month").startOf("month").format("MMM DD, YYYY")
           : moment().format("MMM DD, YYYY"),
       contacts: [{ info: contact.info }],
       occasion: null,
@@ -124,6 +128,17 @@ exports.rejectContact = async (req, res) => {
     c.save();
   } catch (err) {
     return res.status(406).send({ error: err.message });
+  }
+  res.send({ response: "Success" });
+};
+
+exports.removeFromBlackList = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    await Contact.findByIdAndDelete({ _id: id });
+  } catch (err) {
+    console.log(err);
   }
   res.send({ response: "Success" });
 };
