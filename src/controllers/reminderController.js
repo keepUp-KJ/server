@@ -41,12 +41,6 @@ exports.addReminder = async (req, res) => {
     ", " +
     d.getFullYear();
 
-  if (notify === "One day before") {
-    reminderDate = moment(date).subtract(1, "d").format("MMM DD, YYYY");
-  } else if (notify === "One week before") {
-    reminderDate = moment(date).subtract(1, "w").format("MMM DD, YYYY");
-  }
-
   if (user && contacts) {
     try {
       const reminder = new Reminder({
