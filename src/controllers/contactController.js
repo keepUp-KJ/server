@@ -9,8 +9,6 @@ const Reminder = mongoose.model("Reminder", ReminderSchema);
 exports.setupAccount = async (req, res) => {
   const { userId, contacts } = req.body;
 
-  const today = moment().day();
-
   for (var i = 0; i < contacts.length; i++) {
     try {
       if (contacts[i].isAccepted) {
@@ -25,14 +23,7 @@ exports.setupAccount = async (req, res) => {
 
         const reminder = new Reminder({
           userId,
-          date:
-            contacts[i].frequency === "weekly"
-              ? today === 0
-                ? moment().day(0).format("MMM DD, YYYY")
-                : moment().day(7).format("MMM DD, YYYY")
-              : contacts[i].frequency === "monthly"
-              ? moment().add(1, "month").startOf("month").format("MMM DD, YYYY")
-              : moment().format("MMM DD, YYYY"),
+          date: getDate(contacts[i].frequency),
           contacts: [
             {
               info: contacts[i].info,
@@ -82,28 +73,19 @@ exports.editContact = async (req, res) => {
 exports.acceptContact = async (req, res) => {
   const { userId, contact, frequency } = req.body;
 
-  const today = moment().day();
-
   try {
     const c = new Contact({
       userId,
       info: contact.info,
       isAccepted: true,
       isRejected: false,
-      frequency: frequency,
+      frequency,
     });
     c.save();
 
     const reminder = new Reminder({
       userId,
-      date:
-        frequency === "weekly"
-          ? today === 0
-            ? moment().day(0).format("MMM DD, YYYY")
-            : moment().day(7).format("MMM DD, YYYY")
-          : frequency === "monthly"
-          ? moment().add(1, "month").startOf("month").format("MMM DD, YYYY")
-          : moment().format("MMM DD, YYYY"),
+      date: getDate(frequency),
       contacts: [{ info: contact.info }],
       occasion: null,
       completed: false,
@@ -141,4 +123,19 @@ exports.removeFromBlackList = async (req, res) => {
     console.log(err);
   }
   res.send({ response: "Success" });
+};
+
+getDate = (frequency) => {
+  const today = moment().day();
+  let date;
+
+  frequency === "weekly"
+    ? today === 0
+      ? (date = moment().day(0).format("MMM DD, YYYY"))
+      : (date = moment().day(7).format("MMM DD, YYYY"))
+    : frequency === "monthly"
+    ? (date = moment().add(1, "month").startOf("month").format("MMM DD, YYYY"))
+    : (date = moment().format("MMM DD, YYYY"));
+
+  return date;
 };
