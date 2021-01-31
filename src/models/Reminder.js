@@ -19,7 +19,6 @@ const ReminderSchema = new Schema({
     type: String,
     enum: ["On the same day", "One day before", "One week before", "None"],
   },
-  // notifyOn: {},
   occasion: {
     type: String,
   },
