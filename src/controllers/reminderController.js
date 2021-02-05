@@ -111,17 +111,17 @@ exports.markCompleted = async (req, res) => {
         userId: reminder.userId,
       });
 
-      today = moment().format("MMM DD, YYYY");
+      let date = moment().format("MMM DD, YYYY");
       if (contact.frequency === "daily") {
-        today = moment().add(1, "day").format("MMM DD, YYYY");
+        date = moment().add(1, "day").format("MMM DD, YYYY");
       } else if (contact.frequency === "weekly") {
-        today = moment().add(7, "day").format("MMM DD, YYYY");
+        date = moment().add(7, "day").format("MMM DD, YYYY");
       } else if (contact.frequency === "monthly") {
-        today = moment().add(1, "month").format("MMM DD, YYYY");
+        date = moment().add(1, "month").format("MMM DD, YYYY");
       }
 
-      await Reminder.updateOne({ _id: reminderId }, { $set: { date: today } });
-      reminder.date = today;
+      await Reminder.updateOne({ _id: reminderId }, { $set: { date } });
+      reminder.date = date;
       return res.send({ reminder });
     } catch (err) {
       return res.status(406).send({ error: err.message });
