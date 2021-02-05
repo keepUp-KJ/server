@@ -73,6 +73,8 @@ exports.editContact = async (req, res) => {
 exports.acceptContact = async (req, res) => {
   const { userId, contact, frequency } = req.body;
 
+  let reminder = {};
+
   try {
     const c = new Contact({
       userId,
@@ -83,7 +85,7 @@ exports.acceptContact = async (req, res) => {
     });
     c.save();
 
-    const reminder = new Reminder({
+    reminder = new Reminder({
       userId,
       date: getDate(frequency),
       contacts: [{ info: contact.info }],
@@ -94,7 +96,7 @@ exports.acceptContact = async (req, res) => {
   } catch (err) {
     return res.status(406).send({ error: err.message });
   }
-  res.send({ response: "Success" });
+  res.send({ reminder });
 };
 
 exports.rejectContact = async (req, res) => {
