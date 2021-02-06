@@ -198,28 +198,20 @@ exports.updateSettings = async (req, res) => {
   const userId = req.params.id;
   const { settings } = req.body;
 
-  if (
-    settings.birthdayReminder != null &&
-    settings.callReminder != null &&
-    settings.incompleteTaskReminder != null &&
-    settings.birthdayNotification != null &&
-    settings.dailyCallNotification != null &&
-    settings.incompleteTaskNotification != null
-  ) {
-    await User.updateOne({ _id: userId }, { $set: { settings } });
-    res.send({ response: "Success" });
-  } else return res.send({ error: "Fields can't be empty" });
+  await User.updateOne({ _id: userId }, { $set: { settings } });
+  res.send({ response: "Success" });
 };
 
 exports.getUserSettings = async (req, res) => {
-  const { userId } = req.params.id;
+  const userId = req.params.id;
   const userSettings = await User.findOne(
     {
-      userId,
+      _id: userId,
     },
-    { settings: 1, _id: 0 }
+    { "settings.general": 1, "settings.notifications": 1, _id: 0 }
   );
-  res.send(userSettings);
+
+  res.send({ settings: userSettings });
 };
 
 exports.setPushToken = async (req, res) => {

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { Int32 } = require("mongodb");
 
 const Schema = mongoose.Schema;
 
@@ -44,24 +45,38 @@ const UserSchema = new Schema({
     default: () => new Date(+new Date() + 3 * 60 * 1000),
   },
   settings: {
-    birthdayReminder: {
-      type: String,
-      enum: ["On the same day", "One day before", "One week before", "None"],
-      default: "On the same day",
+    general: {
+      reminderAt: {
+        type: String,
+        default: "17:00",
+      },
+      weeklyReminder: {
+        type: Number,
+        default: 0,
+      },
+      monthlyReminder: {
+        type: Number,
+        default: 1,
+      },
     },
-    callReminder: {
-      type: String,
-      enum: ["On the same day", "One day before", "One week before", "None"],
-      default: "On the same day",
+    notifications: {
+      dailyCalls: {
+        type: Boolean,
+        default: false,
+      },
+      weeklyCalls: {
+        type: Boolean,
+        default: true,
+      },
+      monthlyCalls: {
+        type: Boolean,
+        default: true,
+      },
+      incompleteTask: {
+        type: Boolean,
+        default: true,
+      },
     },
-    incompleteTaskReminder: {
-      type: String,
-      enum: ["One day after", "One week after", "None"],
-      default: "One day after",
-    },
-    birthdayNotification: { type: Boolean, default: false },
-    dailyCallNotification: { type: Boolean, default: false },
-    incompleteTaskNotification: { type: Boolean, default: false },
   },
 });
 
