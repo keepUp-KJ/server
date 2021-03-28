@@ -34,50 +34,11 @@ const UserSchema = new Schema({
     type: String,
     default: null,
   },
-  code: {
+  type: {
     type: String,
+    default: null,
   },
-  token: {
-    type: String,
-  },
-  codeExpires: {
-    type: Date,
-    default: () => new Date(+new Date() + 3 * 60 * 1000),
-  },
-  settings: {
-    general: {
-      reminderAt: {
-        type: String,
-        default: "17:00",
-      },
-      weeklyReminder: {
-        type: Number,
-        default: 0,
-      },
-      monthlyReminder: {
-        type: Number,
-        default: 1,
-      },
-    },
-    notifications: {
-      dailyCalls: {
-        type: Boolean,
-        default: false,
-      },
-      weeklyCalls: {
-        type: Boolean,
-        default: true,
-      },
-      monthlyCalls: {
-        type: Boolean,
-        default: true,
-      },
-      incompleteTask: {
-        type: Boolean,
-        default: true,
-      },
-    },
-  },
+
 });
 
 UserSchema.pre("save", function (next) {

@@ -1,40 +1,31 @@
-const userRoutes = require("./src/routes/userRoutes");
-const contactRoutes = require("./src/routes/contactRoutes");
-const reminderRoutes = require("./src/routes/reminderRoutes");
+import express from 'express';
+import routes from './src/routes/crmRoutes';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
 
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
 
 const app = express();
+const PORT = 4000;
 
+//mongoose connection
 mongoose.Promise = global.Promise;
-mongoose.connect(
-  "mongodb+srv://admin:jk9998@keepup.wpw8h.mongodb.net/ku?retryWrites=true&w=majority",
-  {
+mongoose.connect('mongodb+srv://jana:OkxJD6oe4J2RLGd2@cluster0.2pnqd.mongodb.net/BCDdb?retryWrites=true&w=majority', {
     useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-  }
-);
+    useUnifiedTopology: true
+});
 
+//bodyParser setup
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-userRoutes(app);
-contactRoutes(app);
-reminderRoutes(app);
 
-mongoose.connection.on("connected", () => {
-  console.log("Connected to mongo instance");
+
+routes(app);
+
+app.get('/', (req, res) => {
+    res.send(`Node and express server running on port ${PORT}`)
 });
 
-mongoose.connection.on("error", (err) => {
-  console.error("Error connecting to mongo\n", err);
-});
-
-app.get("/", (req, res) => res.send(`Hello`));
-
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Your server is running`);
+app.listen(PORT, () => {
+    console.log(`Node and express server running on port ${PORT}`)
 });
