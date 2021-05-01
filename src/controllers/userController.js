@@ -15,7 +15,6 @@ exports.signup = async (req, res) => {
     mobile,
     password,
     confPassword,
-    type
   } = req.body;
   const code = Math.floor(1000 + Math.random() * 9000);
   const errors = { email: [], password: [], confPassword: [] };
@@ -64,8 +63,7 @@ exports.signup = async (req, res) => {
       mobile,
       password,
       code,
-      type
-
+      token,
     });
 
     await user.save();
@@ -75,10 +73,10 @@ exports.signup = async (req, res) => {
       subject: "Please confirm your email address",
       html: `<div>
           <h2>Hi there!</h2>
-          <h3>Please enter the code below to verify your account</h3>
+          <h3>Thanks for joining KeepUp. To finish registration, please enter the code below to verify your account</h3>
           <h3>${code}</h3>
         </div>`,
-      from: "bcd-labs@gmail.com",
+      from: "keep.up.kj.usytech@gmail.com",
     });
 
     res.send({ user });
@@ -139,7 +137,7 @@ exports.forgotPassword = async (req, res) => {
         <h3>Thanks for joining KeepUp. To change password, please enter the code below to verify your email</h3>
         <h3>${code}</h3>
       </div>`,
-    from: "bcd-labs@gmail.com",
+    from: "keep.up.kj.usytech@gmail.com",
   });
 
   const user = User.find({ email });
